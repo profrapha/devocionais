@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devocionais Diários - Teologia Reformada</title>
+    <meta name="description" content="Devocionais diários baseados na teologia reformada cristã para educação e edificação espiritual.">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="main-title">Devocionais Diários</h1>
+                <p class="subtitle">Baseados na Teologia Reformada Cristã</p>
+                <div class="header-decoration"></div>
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-content">
+                <h3 class="nav-title">Navegação</h3>
+                <div class="nav-controls">
+                    <button class="btn btn-primary" onclick="goToToday()">
+                        <span class="btn-icon">📅</span>
+                        Hoje
+                    </button>
+                    <button class="btn btn-secondary" onclick="previousDay()">
+                        <span class="btn-icon">←</span>
+                        Anterior
+                    </button>
+                    <button class="btn btn-secondary" onclick="nextDay()">
+                        <span class="btn-icon">→</span>
+                        Próximo
+                    </button>
+                    <input type="date" class="date-input" id="dateSelector" onchange="goToDate()">
+                    <button class="btn btn-accent" onclick="randomDay()">
+                        <span class="btn-icon">🎲</span>
+                        Aleatório
+                    </button>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Buscar por palavra-chave..." onkeyup="searchDevocionais(event)">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <article class="devocional-card">
+                <div class="card-header">
+                    <div class="date-info">
+                        <div class="current-date" id="currentDate"></div>
+                        <div class="day-counter" id="dayCounter"></div>
+                    </div>
+                </div>
+
+                <div class="image-container" id="imageContainer">
+                    <div class="image-placeholder">
+                        <span class="placeholder-icon">🌅</span>
+                        <p class="placeholder-text">Espaço reservado para imagem</p>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <header class="devocional-header">
+                        <h1 class="devocional-title" id="devocionalTitle"></h1>
+                        <div class="principio-central" id="principioCentral"></div>
+                    </header>
+
+                    <section class="versiculo-section">
+                        <h3 class="section-title">Versículo do Dia</h3>
+                        <blockquote class="versiculo" id="versiculoDia"></blockquote>
+                    </section>
+
+                    <section class="historia-section">
+                        <h3 class="section-title">Pense Nisso</h3>
+                        <div class="section-content" id="penseNisso"></div>
+                    </section>
+
+                    <section class="reflexao-section">
+                        <h3 class="section-title">Conectando os Pontos</h3>
+                        <div class="section-content" id="conectandoPontos"></div>
+                    </section>
+
+                    <section class="desafio-section">
+                        <h3 class="section-title">Desafio Prático</h3>
+                        <div class="section-content" id="desafioPratico"></div>
+                    </section>
+
+                    <section class="oracao-section">
+                        <h3 class="section-title">Oração Guia</h3>
+                        <div class="section-content oracao-content" id="oracaoGuia"></div>
+                    </section>
+                </div>
+            </article>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2025 - Devocionais para Educação Cristã Reformada</p>
+                <p class="footer-note">Desenvolvido para edificação e crescimento espiritual</p>
+            </div>
+        </footer>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Carregando devocional...</p>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+

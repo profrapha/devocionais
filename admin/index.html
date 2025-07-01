@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração - Devocionais Diários</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>🔐 Área Administrativa</h1>
+                <p>Devocionais Diários - Teologia Reformada</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="password">Senha de Acesso:</label>
+                    <input type="password" id="password" class="form-input" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+                <div class="login-error" id="loginError"></div>
+            </form>
+            <div class="login-footer">
+                <a href="../index.html" class="back-link">← Voltar ao site público</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interface Administrativa -->
+    <div class="admin-interface" id="adminInterface" style="display: none;">
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <h1>📝 Administração de Devocionais</h1>
+                <div class="admin-actions">
+                    <button class="btn btn-secondary" onclick="exportData()">📥 Exportar</button>
+                    <button class="btn btn-secondary" onclick="importData()">📤 Importar</button>
+                    <button class="btn btn-danger" onclick="logout()">🚪 Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="admin-nav">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('list')">📋 Lista de Devocionais</button>
+                <button class="nav-tab" onclick="showTab('edit')">✏️ Editar Devocional</button>
+                <button class="nav-tab" onclick="showTab('bulk')">📦 Importação em Massa</button>
+                <button class="nav-tab" onclick="showTab('settings')">⚙️ Configurações</button>
+            </div>
+        </nav>
+
+        <main class="admin-content">
+            <!-- Aba Lista de Devocionais -->
+            <div class="tab-content active" id="listTab">
+                <div class="content-header">
+                    <h2>Lista de Devocionais</h2>
+                    <div class="header-actions">
+                        <input type="text" class="search-input" id="adminSearch" placeholder="Buscar devocional...">
+                        <button class="btn btn-primary" onclick="createNewDevocional()">➕ Novo Devocional</button>
+                    </div>
+                </div>
+                
+                <div class="devocionais-grid" id="devocionaisGrid">
+                    <!-- Lista será preenchida dinamicamente -->
+                </div>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Paginação será preenchida dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Aba Editar Devocional -->
+            <div class="tab-content" id="editTab">
+                <div class="content-header">
+                    <h2>Editar Devocional</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-success" onclick="saveDevocional()">💾 Salvar</button>
+                        <button class="btn btn-secondary" onclick="previewDevocional()">👁️ Visualizar</button>
+                        <button class="btn btn-danger" onclick="deleteDevocional()" id="deleteBtn" style="display: none;">🗑️ Excluir</button>
+                    </div>
+                </div>
+
+                <form class="edit-form" id="editForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editDay">Dia do Ano (1-366):</label>
+                            <input type="number" id="editDay" class="form-input" min="1" max="366" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editData">Data:</label>
+                            <input type="text" id="editData" class="form-input" placeholder="Ex: 1º de Janeiro" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editTitulo">Título:</label>
+                        <input type="text" id="editTitulo" class="form-input" placeholder="Título do devocional" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPrincipio">Princípio Central:</label>
+                        <select id="editPrincipio" class="form-input">
+                            <option value="Soli Deo Gloria (A Glória Somente a Deus)">Soli Deo Gloria (A Glória Somente a Deus)</option>
+                            <option value="Sola Scriptura (Somente a Escritura)">Sola Scriptura (Somente a Escritura)</option>
+                            <option value="Sola Gratia (Somente a Graça)">Sola Gratia (Somente a Graça)</option>
+                            <option value="Sola Fide (Somente a Fé)">Sola Fide (Somente a Fé)</option>
+                            <option value="Solus Christus (Somente Cristo)">Solus Christus (Somente Cristo)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editVersiculo">Versículo do Dia:</label>
+                        <textarea id="editVersiculo" class="form-textarea" rows="3" placeholder="&quot;Versículo bíblico&quot; - Referência" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPenseNisso">Pense Nisso (A História):</label>
+                        <textarea id="editPenseNisso" class="form-textarea" rows="6" placeholder="História ou situação do cotidiano..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editConectando">Conectando os Pontos (Reflexão Pastoral):</label>
+                        <textarea id="editConectando" class="form-textarea" rows="8" placeholder="Reflexão teológica e aplicação..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editDesafio">Desafio Prático:</label>
+                        <textarea id="editDesafio" class="form-textarea" rows="4" placeholder="Ação prática para aplicar hoje..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editOracao">Oração Guia:</label>
+                        <textarea id="editOracao" class="form-textarea" rows="4" placeholder="&quot;Senhor, ...&quot;" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editImagem">Imagem (opcional):</label>
+                        <div class="image-upload-area">
+                            <input type="file" id="editImagem" class="form-input" accept="image/*">
+                            <div class="image-preview" id="imagePreview">
+                                <span class="preview-placeholder">📷 Nenhuma imagem selecionada</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Aba Importação em Massa -->
+            <div class="tab-content" id="bulkTab">
+                <div class="content-header">
+                    <h2>Importação em Massa</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="downloadTemplate()">📄 Baixar Modelo</button>
+                        <button class="btn btn-success" onclick="processBulkImport()">📥 Processar Importação</button>
+                    </div>
+                </div>
+
+                <div class="bulk-import-area">
+                    <div class="import-instructions">
+                        <h3>Como importar devocionais em massa:</h3>
+                        <ol>
+                            <li>Baixe o modelo CSV clicando em "Baixar Modelo"</li>
+                            <li>Preencha o arquivo com seus devocionais</li>
+                            <li>Selecione o arquivo preenchido abaixo</li>
+                            <li>Clique em "Processar Importação"</li>
+                        </ol>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bulkFile">Arquivo CSV:</label>
+                        <input type="file" id="bulkFile" class="form-input" accept=".csv">
+                    </div>
+
+                    <div class="bulk-preview" id="bulkPreview">
+                        <!-- Preview será mostrado aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba Configurações -->
+            <div class="tab-content" id="settingsTab">
+                <div class="content-header">
+                    <h2>Configurações</h2>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>🔐 Segurança</h3>
+                        <div class="form-group">
+                            <label for="newPassword">Nova Senha:</label>
+                            <input type="password" id="newPassword" class="form-input" placeholder="Digite a nova senha">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirmar Senha:</label>
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="Confirme a nova senha">
+                        </div>
+                        <button class="btn btn-primary" onclick="changePassword()">Alterar Senha</button>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>📊 Estatísticas</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalDevocionais">0</span>
+                                <span class="stat-label">Total de Devocionais</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="completedDevocionais">0</span>
+                                <span class="stat-label">Devocionais Completos</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="withImages">0</span>
+                                <span class="stat-label">Com Imagens</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>🔄 Backup</h3>
+                        <p>Faça backup regular dos seus devocionais para não perder seu trabalho.</p>
+                        <div class="backup-actions">
+                            <button class="btn btn-secondary" onclick="createBackup()">Criar Backup</button>
+                            <button class="btn btn-secondary" onclick="restoreBackup()">Restaurar Backup</button>
+                        </div>
+                        <div class="backup-info" id="backupInfo">
+                            <small>Último backup: Nunca</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Preview -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👁️ Visualização do Devocional</h3>
+                <button class="modal-close" onclick="closePreview()">&times;</button>
+            </div>
+            <div class="modal-body" id="previewContent">
+                <!-- Conteúdo do preview será inserido aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
+
