@@ -259,7 +259,9 @@ const displayManager = {
         
         const currentYear = new Date().getFullYear();
         const date = new Date(currentYear, 0, day);
-        elements.dateSelector.value = date.toISOString().split('T')[0];
+        // Ajustar para o fuso horário local para evitar problemas de dia
+        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+        elements.dateSelector.value = date.toISOString().split("T")[0];
     },
 
     showError(message) {
