@@ -35,12 +35,18 @@ const elements = {
 const utils = {
     // Obter dia do ano
     getDayOfYear(date = new Date()) {
-        const start = new Date(date.getFullYear(), 0, 1);
-        const diff = date - start;
+        // Clonar a data para evitar mutação
+        const localDate = new Date(date);
+        // Ajustar para o início do dia no fuso horário local
+        localDate.setHours(0, 0, 0, 0);
+
+        const startOfYear = new Date(localDate.getFullYear(), 0, 1);
+        const diff = localDate - startOfYear;
         const day = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+
         // Lidar com 29 de fevereiro em anos não bissextos para manter 366 dias
-        const isLeapYear = (date.getFullYear() % 4 === 0 && date.getFullYear() % 100 !== 0) || (date.getFullYear() % 400 === 0);
-        if (!isLeapYear && date.getMonth() > 1 && day >= 60) { // Se for depois de 28 de fevereiro (dia 59)
+        const isLeapYear = (localDate.getFullYear() % 4 === 0 && localDate.getFullYear() % 100 !== 0) || (localDate.getFullYear() % 400 === 0);
+        if (!isLeapYear && localDate.getMonth() > 1) { // Se for depois de 28 de fevereiro
             return day + 1; // Pular o dia 29 de fevereiro
         }
         return day;
@@ -449,9 +455,5 @@ if ('serviceWorker' in navigator) {
             .then(registration => {
                 console.log('SW registrado: ', registration);
             })
-            .catch(registrationError => {
-                console.log('SW falhou: ', registrationError);
-            });
-    });
-}
-
+            .catch(registrationError =
+(Content truncated due to size limit. Use line ranges to read in chunks)
