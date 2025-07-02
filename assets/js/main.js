@@ -35,9 +35,15 @@ const elements = {
 const utils = {
     // Obter dia do ano
     getDayOfYear(date = new Date()) {
-        const start = new Date(date.getFullYear(), 0, 0);
+        const start = new Date(date.getFullYear(), 0, 1);
         const diff = date - start;
-        return Math.floor(diff / (1000 * 60 * 60 * 24));
+        const day = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+        // Lidar com 29 de fevereiro em anos não bissextos para manter 366 dias
+        const isLeapYear = (date.getFullYear() % 4 === 0 && date.getFullYear() % 100 !== 0) || (date.getFullYear() % 400 === 0);
+        if (!isLeapYear && date.getMonth() > 1 && day >= 60) { // Se for depois de 28 de fevereiro (dia 59)
+            return day + 1; // Pular o dia 29 de fevereiro
+        }
+        return day;
     },
 
     // Formatar data
